@@ -1,0 +1,8 @@
+{
+  "resources": [
+    { "name": "net-main", "type": "network", "properties": { "cidr": "10.0.0.0/16" } },
+    { "name": "web-1",    "type": "vm",      "properties": { "size": "small", "network": "net-main" } },
+    { "name": "web-2",    "type": "vm",      "properties": { "size": "small", "network": "net-main" } },
+    { "name": "lb-web",   "type": "load_balancer", "properties": { "pool": ["web-1", "web-2"] } }
+  ]
+}

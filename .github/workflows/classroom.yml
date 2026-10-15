@@ -1,0 +1,60 @@
+name: Autograding
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Plan - create, update, no-op
+        id: basics
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Plan: create, update, no-op"
+          command: python -m pytest -q tests -k "creates or noop or drift or idempotent"
+          timeout: 5
+          max-score: 3
+
+      - name: Delete - plan and apply
+        id: delete
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Delete: plan and apply (exercise C)"
+          command: python -m pytest -q tests -k "deleted or removal"
+          timeout: 5
+          max-score: 3
+
+      - name: Submission answered
+        id: submission
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "SUBMISSION.md complete"
+          command: bash scripts/check-submission.sh
+          timeout: 5
+          max-score: 4
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          BASICS_RESULTS: "${{ steps.basics.outputs.result }}"
+          DELETE_RESULTS: "${{ steps.delete.outputs.result }}"
+          SUBMISSION_RESULTS: "${{ steps.submission.outputs.result }}"
+        with:
+          runners: basics,delete,submission

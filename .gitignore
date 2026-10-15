@@ -1,0 +1,19 @@
+# Fake clouds created by the demos
+.fakecloud-imperative/
+demo/declarative/.fakecloud/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+demo/terraform-local/out/
+
+# Python
+__pycache__/
+.pytest_cache/
+
+# Never commit credentials
+*.pem
+*.key
+.env
