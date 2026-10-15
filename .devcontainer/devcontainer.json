@@ -19,7 +19,7 @@
     }
   },
 
-  // 2-core is enough for every lab until Kubernetes (week 9).
+  // 2-core is enough for every lab until Kubernetes (week 10).
   "hostRequirements": {
     "cpus": 2
   },
