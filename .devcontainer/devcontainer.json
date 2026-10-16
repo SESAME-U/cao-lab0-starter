@@ -6,7 +6,11 @@
   // codespaces based on the default image do not count the container
   // against your monthly storage quota, even with extra features added.
   "name": "CAO toolbox",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  // The universal image's user is "codespace"; "vscode" does not exist in it.
+  "remoteUser": "codespace",
 
   "features": {
     "ghcr.io/devcontainers/features/terraform:1": {
